@@ -14,8 +14,8 @@ import (
 // addUser add users
 func addUser(db *gorm.DB, w http.ResponseWriter, req *http.Request) {
 	secret := req.URL.Query().Get("id")
-	owner := "dc10ce85-5380-4ca1-8c0a-960eab4d5f22"
-	if secret != owner {
+	config := ConfigParser()
+	if secret != config.Owner {
 		loadResp := Error{false, "no you (눈‸눈)"}
 		resp, _ := json.Marshal(loadResp)
 		w.WriteHeader(http.StatusUnauthorized)

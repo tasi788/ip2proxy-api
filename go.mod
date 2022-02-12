@@ -7,5 +7,6 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/mux v1.8.0
 	github.com/ip2location/ip2proxy-go v3.0.0+incompatible
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gorm.io/gorm v1.22.5
 )

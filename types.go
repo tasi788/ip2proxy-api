@@ -16,11 +16,11 @@ type AddUser struct {
 }
 
 type QueryResult struct {
-	Status        bool   `json:"state"`
-	IsProxy       bool   `json:"is_proxy"`
-	ProxyType     string `json:"proxy_type"`
-	Country       string `json:"country"`
-	Version       string `json:"version"`
+	Status    bool   `json:"state"`
+	IsProxy   bool   `json:"is_proxy"`
+	ProxyType string `json:"proxy_type"`
+	Country   string `json:"country"`
+	Version   string `json:"version"`
 }
 
 // Record gorm.Record definition
@@ -29,6 +29,10 @@ type Record struct {
 	ID        uint `gorm:"primaryKey"`
 	CreatedAt time.Time
 	UUID      string
+}
+
+type Config struct {
+	Owner string `yaml:"owner"`
 }
 
 // DBMigrate will create and migrate the tables, and then make the some relationships if necessary
