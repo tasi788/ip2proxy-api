@@ -13,9 +13,9 @@ import (
 
 // addUser add users
 func addUser(db *gorm.DB, w http.ResponseWriter, req *http.Request) {
-	secret := req.URL.Query().Get("id")
+	auth := req.URL.Query().Get("auth")
 	config := ConfigParser()
-	if secret != config.Owner {
+	if auth != config.Owner {
 		loadResp := Error{false, "no you (눈‸눈)"}
 		resp, _ := json.Marshal(loadResp)
 		w.WriteHeader(http.StatusUnauthorized)
@@ -39,7 +39,7 @@ func addUser(db *gorm.DB, w http.ResponseWriter, req *http.Request) {
 
 func query(db *gorm.DB, w http.ResponseWriter, req *http.Request) {
 	ip := req.URL.Query().Get("ip")
-	id := req.URL.Query().Get("id")
+	id := req.URL.Query().Get("auth")
 	if ip == "" || id == "" {
 		loadResp := Error{false, "missing parameter"}
 		resp, _ := json.Marshal(loadResp)
@@ -79,8 +79,44 @@ func query(db *gorm.DB, w http.ResponseWriter, req *http.Request) {
 		all["ProxyType"],
 		all["CountryShort"],
 		ipdb.DatabaseVersion(),
-
 	}
 	resp, _ := json.Marshal(queryResp)
 	w.Write(resp)
+}
+
+func deleteUser(db *gorm.DB, w http.ResponseWriter, req *http.Request) {
+	id := req.URL.Query().Get("id")
+	auth := req.URL.Query().Get("auth")
+
+	config := ConfigParser()
+	if auth != config.Owner {
+		loadResp := Error{false, "no you (눈‸눈)"}
+		resp, _ := json.Marshal(loadResp)
+		w.WriteHeader(http.StatusUnauthorized)
+		_, err := w.Write(resp)
+		if err != nil {
+			log.Fatal(err)
+		}
+		return
+	}
+	var record Record
+	result := db.Where("uuid = ?", id).Delete(&record)
+	if result.RowsAffected == 0 {
+		loadResp := Error{false, "not found record"}
+		resp, _ := json.Marshal(loadResp)
+		w.WriteHeader(http.StatusBadRequest)
+		_, err := w.Write(resp)
+		if err != nil {
+			log.Fatal(err)
+		}
+		return
+	} else {
+		loadResp := Error{true, "(◓Д◒)✄╰⋃╯"}
+		resp, _ := json.Marshal(loadResp)
+		_, err := w.Write(resp)
+		if err != nil {
+			log.Fatal(err)
+		}
+		return
+	}
 }

@@ -28,6 +28,7 @@ func (a *App) setRouters() {
 	// Routing for handling the projects
 	a.Get("/add", a.addUser)
 	a.Get("/query", a.query)
+	a.Delete("/delete", a.deleteUser)
 	//a.Get("/employees/{title}", a.GetEmployee)
 }
 
@@ -41,6 +42,11 @@ func (a *App) Post(path string, f func(w http.ResponseWriter, r *http.Request)) 
 	a.Router.HandleFunc(path, f).Methods("POST")
 }
 
+// Delete Wrap the router for POST method
+func (a *App) Delete(path string, f func(w http.ResponseWriter, r *http.Request)) {
+	a.Router.HandleFunc(path, f).Methods("DELETE")
+}
+
 // Router
 
 func (a *App) addUser(w http.ResponseWriter, r *http.Request) {
@@ -49,4 +55,8 @@ func (a *App) addUser(w http.ResponseWriter, r *http.Request) {
 
 func (a *App) query(w http.ResponseWriter, r *http.Request) {
 	query(a.DB, w, r)
+}
+
+func (a *App) deleteUser(w http.ResponseWriter, r *http.Request) {
+	deleteUser(a.DB, w, r)
 }
