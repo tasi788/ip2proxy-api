@@ -42,7 +42,7 @@ fn query(ip: &str) -> Option<Json<Resp>> {
             // println!("{:?}", resp);
             return Some(Json(resp));
         }
-        Err(e) => {
+        Err(_) => {
             let resp = Resp {
                 status: false,
                 proxy: false,
