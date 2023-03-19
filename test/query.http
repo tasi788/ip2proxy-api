@@ -1,0 +1,3 @@
+### GET request with a header
+GET http://localhost:8000/query?ip=127.1.1.1
+Accept: application/json
